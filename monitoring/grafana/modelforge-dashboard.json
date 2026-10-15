@@ -1,0 +1,56 @@
+{
+  "title": "ModelForge Overview",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Inference Requests per Model",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [
+        {"expr": "sum(rate(inference_requests_total[1m])) by (model)", "legendFormat": "{{model}}"}
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Inference Latency (p95)",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "targets": [
+        {"expr": "histogram_quantile(0.95, sum(rate(inference_latency_seconds_bucket[5m])) by (le, model))", "legendFormat": "{{model}}"}
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Inference Errors",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "targets": [
+        {"expr": "sum(rate(inference_errors_total[1m])) by (model, error_type)", "legendFormat": "{{model}}-{{error_type}}"}
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Model Predictions Total",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "targets": [
+        {"expr": "sum(rate(model_predictions_total[1m])) by (model, status)", "legendFormat": "{{model}}-{{status}}"}
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Pod CPU Usage (modelforge namespace)",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+      "targets": [
+        {"expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"modelforge\"}[1m])) by (pod)", "legendFormat": "{{pod}}"}
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Pod Count per Deployment",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+      "targets": [
+        {"expr": "kube_deployment_status_replicas{namespace=\"modelforge\"}", "legendFormat": "{{deployment}}"}
+      ]
+    }
+  ]
+}

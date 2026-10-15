@@ -1,0 +1,6 @@
+apiVersion: v2
+name: modelforge
+description: Kubernetes-based AI model serving platform (API Gateway + 3 model services + Redis + PostgreSQL + monitoring)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

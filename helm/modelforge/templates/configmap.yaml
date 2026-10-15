@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: modelforge-config
+  namespace: {{ .Values.namespace }}
+data:
+  ENVIRONMENT: "production"
+  POSTGRES_HOST: "postgres-service"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: {{ .Values.postgres.db | quote }}
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+  SENTIMENT_SERVICE_URL: "http://sentiment-service"
+  IMAGE_SERVICE_URL: "http://image-service"
+  REGRESSION_SERVICE_URL: "http://regression-service"
+  MODEL_SERVICE_TIMEOUT: "5.0"

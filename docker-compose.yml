@@ -1,0 +1,103 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: modelforge-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-modelforge}
+      POSTGRES_USER: ${POSTGRES_USER:-modelforge}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-modelforge}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-modelforge}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - modelforge-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: modelforge-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - modelforge-net
+
+  sentiment-service:
+    build: ./models/sentiment
+    container_name: modelforge-sentiment
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    networks:
+      - modelforge-net
+
+  image-service:
+    build: ./models/image
+    container_name: modelforge-image
+    restart: unless-stopped
+    ports:
+      - "8002:8000"
+    networks:
+      - modelforge-net
+
+  regression-service:
+    build: ./models/regression
+    container_name: modelforge-regression
+    restart: unless-stopped
+    ports:
+      - "8003:8000"
+    networks:
+      - modelforge-net
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: modelforge-api-gateway
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: development
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-modelforge}
+      POSTGRES_USER: ${POSTGRES_USER:-modelforge}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-modelforge}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SENTIMENT_SERVICE_URL: http://sentiment-service:8000
+      IMAGE_SERVICE_URL: http://image-service:8000
+      REGRESSION_SERVICE_URL: http://regression-service:8000
+      MODEL_SERVICE_TIMEOUT: 5.0
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      sentiment-service:
+        condition: service_started
+      image-service:
+        condition: service_started
+      regression-service:
+        condition: service_started
+    networks:
+      - modelforge-net
+
+volumes:
+  postgres_data:
+
+networks:
+  modelforge-net:
+    driver: bridge

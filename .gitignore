@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+*.egg-info/
+dist/
+build/
+.DS_Store
+*.log
+
+# Kubernetes / Helm
+kubernetes/secret.yaml.local
+
+# Model artifacts already built into images are fine to keep,
+# but ignore any ad-hoc local experiment outputs
+*.ipynb_checkpoints/

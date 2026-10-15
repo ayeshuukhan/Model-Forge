@@ -1,0 +1,35 @@
+global:
+  scrape_interval: 10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  - job_name: "api-gateway"
+    static_configs:
+      - targets: ["api-gateway-service.modelforge.svc.cluster.local:80"]
+
+  - job_name: "sentiment-service"
+    static_configs:
+      - targets: ["sentiment-service.modelforge.svc.cluster.local:80"]
+
+  - job_name: "image-service"
+    static_configs:
+      - targets: ["image-service.modelforge.svc.cluster.local:80"]
+
+  - job_name: "regression-service"
+    static_configs:
+      - targets: ["regression-service.modelforge.svc.cluster.local:80"]
+
+  - job_name: "kubernetes-pods"
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - modelforge
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)

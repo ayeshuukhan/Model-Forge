@@ -1,6 +1,6 @@
 # ModelForge 
 
-ModelForge is a portfolio-grade DevOps/MLOps project that deploys three
+ModelForge is a MLOps based product that deploys three
 independent machine-learning models as microservices behind an API
 Gateway, orchestrated with Kubernetes. The ML models are intentionally
 lightweight (CPU-only, no GPU) — **the learning objective is Kubernetes
@@ -71,7 +71,7 @@ moment you have more than one service:
   lives in YAML (or a Helm chart), so `kubectl apply -f kubernetes/`
   reproduces the entire system from scratch.
 
-### How Kubernetes Service discovery works here
+### How Kubernetes Service works here
 
 Every Deployment has a matching `Service` (ClusterIP). Kubernetes runs
 an internal DNS server (CoreDNS) that resolves a Service's name (e.g.

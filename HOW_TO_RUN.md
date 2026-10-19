@@ -1,6 +1,6 @@
 # How to Run This Project
 
-This guide explains, in plain English, how to start the whole project
+This will help you how to start the whole project
 on Windows and see it working. Follow the steps in order.
 
 ## What You Need Installed

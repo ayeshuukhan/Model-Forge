@@ -1,19 +1,11 @@
-# How to Run This Project
-
-This will help you how to start the whole project
-on Windows and see it working. Follow the steps in order.
-
-## What You Need Installed
+### What You Need Installed
 
 - Docker Desktop
 - kubectl
 - Minikube
 - Python (for Locust, the load-testing tool)
 
-If any of these are missing, install them first — the project won't
-run without them.
-
-## You Will Open 5 Terminal Windows
+### You Will Open 5 Terminal Windows
 
 Each terminal has one job. Don't close them once they're running,
 except where noted.
@@ -34,7 +26,7 @@ cd C:\---
 
 ---
 
-## Terminal 1 — Start the Cluster
+### Terminal 1 — Start the Cluster
 
 ```powershell
 minikube start
@@ -63,9 +55,7 @@ You'll see a line like `Forwarding from 127.0.0.1:8080 -> 8000` and it
 will stay there. That's correct — leave this terminal open and don't
 type anything else into it.
 
----
-
-## Terminal 2 — Watch Autoscaling Live
+### Terminal 2 — Watch Autoscaling Live
 
 Open a new PowerShell window:
 
@@ -76,9 +66,7 @@ kubectl get hpa -n modelforge --watch
 This will sit and update automatically whenever the system scales up
 or down. Leave it open.
 
----
-
-## Terminal 3 — Test the API
+### Terminal 3 — Test the API
 
 Open a new PowerShell window. Run these one at a time to confirm
 everything works:
@@ -113,9 +101,7 @@ kubectl get deployments -n modelforge
 kubectl get pvc -n modelforge
 ```
 
----
-
-## Terminal 4 — Run a Load Test 
+### Terminal 4 — Run a Load Test 
 
 Open a new PowerShell window:
 
@@ -134,9 +120,7 @@ from 2 toward 4 or 5 as CPU usage rises. This is the system scaling
 itself automatically under load. When you're done, click **Stop** in
 the Locust browser tab.
 
----
-
-## Terminal 5 — View the Monitoring Dashboard (Grafana)
+### Terminal 5 — View the Monitoring Dashboard (Grafana)
 
 Open a new PowerShell window:
 
@@ -157,9 +141,7 @@ Set the time range (top right) to **Last 15 minutes** and refresh to
 a load test recently — if it says "No data," that's normal until
 traffic goes through the system.
 
----
-
-## Shutting Everything Down
+### Shutting Everything Down
 
 When you're finished, press `Ctrl+C` in the Locust and port-forward
 terminals, then run:
@@ -171,9 +153,7 @@ minikube stop
 Nothing is deleted — next time you run `minikube start`, everything
 comes back as it was.
 
----
-
-## Troubleshooting
+### Troubleshooting
 
 | Problem | What It Means | Fix |
 |---|---|---|

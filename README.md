@@ -51,9 +51,6 @@ scaled, updated, or replaced without touching the others.
 
 ## Why Kubernetes?
 
-This project uses Kubernetes to solve real problems that show up the
-moment you have more than one service:
-
 - **Service discovery** — the API Gateway calls `http://sentiment-service`,
   never a pod IP. Kubernetes DNS resolves the Service name to whichever
   healthy pod should handle it, even as pods are replaced.
@@ -299,10 +296,3 @@ helm install modelforge ./helm/modelforge \
 - Authentication is intentionally out of scope so it doesn't distract
   from the Kubernetes learning objectives; see "Next Steps" below.
 
-## Next Steps (not implemented, left as extensions)
-
-- Add API-key or JWT authentication at the Ingress or Gateway layer.
-- Add NetworkPolicies to restrict which pods can talk to Postgres/Redis.
-- Add a CI/CD pipeline (build → push → `helm upgrade`).
-- Replace the RandomForest image classifier with a real pretrained CNN
-  once GPU/registry constraints aren't a concern.
